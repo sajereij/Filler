@@ -7,3 +7,4 @@ maps/*
 players*
 *.filler
 .trace
+*.o
