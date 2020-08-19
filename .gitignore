@@ -1,4 +1,9 @@
 *.out
-.DS_st
-/apu/*pft/
-pft/
+.DS_store
+resources/
+resources_mac/
+info
+maps/*
+players*
+*.filler
+.trace

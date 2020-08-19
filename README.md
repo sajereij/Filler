@@ -1,0 +1,1 @@
+Filler is a 42 curriculum project in which you create your player to fight other students on the famous Filler board. The rules are simple: two players fight on a board and, in turn, must place the piece given to them by the game master (a Ruby executable), thereby scoring points. The game ends when a piece cannot be placed.
