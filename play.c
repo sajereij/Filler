@@ -1,39 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   filler.h                                           :+:      :+:    :+:   */
+/*   play.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sreijola <sreijola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/08/19 15:43:22 by sreijola          #+#    #+#             */
-/*   Updated: 2020/08/19 15:43:22 by sreijola         ###   ########.fr       */
+/*   Created: 2020/08/20 21:38:36 by sreijola          #+#    #+#             */
+/*   Updated: 2020/08/20 21:38:36 by sreijola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FILLER_H
-# define FILLER_H
-# include "libft/libft.h"
-# include <stdio.h>
+#include "filler.h"
 
-typedef struct	s_data
+void	ft_arr_fr(char **arr, int rows)
 {
-	int		fd;
-	int		pnb;
-	int		prev_turn;
-	char	**map;
-	char	**pc;
-	int		my;
-	int		mx;
-	int		px;
-	int		py;
-	int		lmxx;
-	int		lmxy;
-	int		lmox;
-	int		lmoy;
-}				t_d;
+	while (rows >= 0)
+	{
+		free(arr[rows]);
+		rows--;
+	}
+	free(arr);
+}
 
-void	init_struct(t_d *d);
-void	get_data(t_d *d);
-void	play_pc(t_d *d);
 
-#endif
+
+void	play_pc(t_d *d)
+{
+
+//	printf("%d %d\n", nxy, nxx);
+	ft_arr_fr(d->map, d->my);
+	ft_arr_fr(d->pc, d->py);
+}

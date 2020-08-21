@@ -6,14 +6,16 @@
 #    By: sreijola <sreijola@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/19 17:36:20 by sreijola          #+#    #+#              #
-#    Updated: 2020/08/19 17:54:01 by sreijola         ###   ########.fr        #
+#    Updated: 2020/08/20 21:15:01 by sreijola         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+.PHONY: all clean fclean re fun fil
+
 NAME = sreijola.filler
 
-SRCS = main.c 
-#data.c solve.c
+SRCS = main.c data.c play.c
+# solve.c
 
 LIB = libft/libft.a
 
@@ -39,3 +41,10 @@ fclean: clean
 
 re: fclean all
 	@echo "All good again"
+	
+fun: re 
+	@make -C libft clean
+	@echo "Only binaries and .cs left"
+
+fil: $(NAME)
+	@$(GCC) $(SRCS) $(FLAGS) $(LIB) -o $(NAME)

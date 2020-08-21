@@ -10,17 +10,15 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
 #include "filler.h"
 
 int		main()
 {
-	char	*line;
-	
-	printf("halojaa\n");
-	get_next_line(1, &line);
-	printf("halojaa\n");
-	printf("#####%s######\n", line);
-	//get_data();
+	t_d		data;
+
+	init_struct(&data);
+	get_data(&data);
+	play_pc(&data);
+	data.pnb == 1 ?	printf("%d %d\n", data.lmoy, data.lmox) : printf("%d %d\n", data.lmxy, data.lmxx);
 	return (0);
 }
