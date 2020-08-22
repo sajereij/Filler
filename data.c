@@ -59,26 +59,23 @@ void	first_moves(t_d *d)
 	int	j;
 	
 	i = -1;
-	j = 0;
 	while (d->map[++i] != NULL)
 	{
-		// printf("!!!!!WC-ANKKA!!!!!\n");
+		j = 0;
 		while (d->map[i][j] != '\0')
 		{
-			// printf("!!!!!SAUNASORSA!!!!!\n");
-			if (d->map[i][j] == 'X')
+			if (d->map[i][j] == 'X' || d->map[i][j] == 'x')
 			{
 				d->lmxx = j;
 				d->lmxy = i;
 			}
-			if (d->map[i][j] == 'O')
+			if (d->map[i][j] == 'O' || d->map[i][j] == 'o')
 			{
 				d->lmox = j;
 				d->lmoy = i;
 			}
 			j++;
 		}
-		j = 0;
 	}
 }
 
@@ -116,8 +113,11 @@ void	get_dim(t_d *d, char *line, int element)
 	(element == 'm') ? (d->mx = tmp) : (d->px = tmp);
 }
 
-void	set_player(t_d *d, char *line)
+void	set_player(t_d *d)
 {
+	char *line;
+	
+	get_next_line(d->fd, &line);
 	if (ft_strstr(line, "sreijola") != NULL) 
 		d->pnb = ft_atoi(ft_strchr((char *)line, 'p') + 1);
 }
@@ -125,7 +125,7 @@ void	set_player(t_d *d, char *line)
 void	init_struct(t_d *d)
 {
 	d->fd = 0;
-	d->pnb = 0;
+	d->pnb = 1;
 	d->prev_turn = 0;
 	d->my = 0;
 	d->mx = 0;
@@ -139,31 +139,26 @@ void	init_struct(t_d *d)
 
 void	get_data(t_d *d)
 {
+//	char	*tmp;
 	char	*line;
-	char	*tmp;
 
-	while (get_next_line(d->fd, &line) != 0)
+	get_next_line(d->fd, &line);
+//	tmp = line;
+	if (ft_strnequ(line, "Plateau", 7))
 	{
-		tmp = line;
-		if (ft_strnequ(line, "$$$", 3))
-			set_player(d, line);
-		else if (ft_strnequ(line, "Plateau", 7))
-		{
-			get_dim(d, line, 'm');
-			get_next_line(d->fd, &line);
-			d->map = get_element(d->my, d->mx, line, 'm');
-			first_moves(d);
-		}
-		else if (ft_strnequ(line, "Piece", 5))
-		{
-			get_dim(d, line, 'p');
-			d->pc = get_element(d->py, d->px, line, 'p');
-		}
-		else if (ft_strnequ(line, "Got", 3))
-			prev_move(d, line);
-		//ft_strclr(line);
-		free(tmp);
+		get_dim(d, line, 'm');
+		get_next_line(d->fd, &line);
+		d->map = get_element(d->my, d->mx, line, 'm');
+		first_moves(d);
 	}
+	else if (ft_strnequ(line, "Piece", 5))
+	{
+		get_dim(d, line, 'p');
+		d->pc = get_element(d->py, d->px, line, 'p');
+	}
+	// else if (ft_strnequ(line, "got", 3))
+	// 	prev_move(d, line);
+	//ft_strclr(line);
 	// ft_print_strarr(d->map);
 	// ft_print_strarr(d->pc);
 	// print_struct(d);

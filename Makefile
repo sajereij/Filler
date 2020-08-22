@@ -6,7 +6,7 @@
 #    By: sreijola <sreijola@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/12/19 17:36:20 by sreijola          #+#    #+#              #
-#    Updated: 2020/08/20 21:15:01 by sreijola         ###   ########.fr        #
+#    Updated: 2020/08/21 13:55:17 by sreijola         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,8 +14,7 @@
 
 NAME = sreijola.filler
 
-SRCS = main.c data.c play.c
-# solve.c
+SRCS = main.c data.c play.c solve.c
 
 LIB = libft/libft.a
 

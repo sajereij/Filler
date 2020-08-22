@@ -15,10 +15,15 @@
 int		main()
 {
 	t_d		data;
+//	char	*line;
 
 	init_struct(&data);
+	set_player(&data);
+	//while (1)
+	// {
 	get_data(&data);
+	choose_move(&data);
 	play_pc(&data);
-	data.pnb == 1 ?	printf("%d %d\n", data.lmoy, data.lmox) : printf("%d %d\n", data.lmxy, data.lmxx);
+	// }
 	return (0);
 }

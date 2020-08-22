@@ -19,9 +19,11 @@ typedef struct	s_data
 {
 	int		fd;
 	int		pnb;
+	int		e; //enemy
 	int		prev_turn;
 	char	**map;
 	char	**pc;
+	int		**hmap;
 	int		my;
 	int		mx;
 	int		px;
@@ -30,10 +32,15 @@ typedef struct	s_data
 	int		lmxy;
 	int		lmox;
 	int		lmoy;
+	int		moves;
+	int		cx;
+	int		cy;
 }				t_d;
 
 void	init_struct(t_d *d);
+void	set_player(t_d *d);
 void	get_data(t_d *d);
 void	play_pc(t_d *d);
+void	choose_move(t_d *d);
 
 #endif

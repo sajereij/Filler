@@ -26,8 +26,7 @@ void	ft_arr_fr(char **arr, int rows)
 
 void	play_pc(t_d *d)
 {
-
-//	printf("%d %d\n", nxy, nxx);
-	ft_arr_fr(d->map, d->my);
-	ft_arr_fr(d->pc, d->py);
+	d->pnb == 1 ? printf("%d %d\n", d->lmoy, d->lmox) : printf("%d %d\n", d->lmxy, d->lmxx);
+	// ft_arr_fr(d->map, d->my);
+	// ft_arr_fr(d->pc, d->py);
 }
