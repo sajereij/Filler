@@ -28,6 +28,9 @@ typedef struct	s_data
 	int		mx;
 	int		px;
 	int		py;
+	int		plx;
+	int		pty; //top left row
+	int		heat;
 	int		lmxx;
 	int		lmxy;
 	int		lmox;
@@ -36,7 +39,10 @@ typedef struct	s_data
 	int		cx;
 	int		cy;
 }				t_d;
+void	ft_print_strarr(char **arr);
 
+
+void	find_top_right(t_d *d);
 void	init_struct(t_d *d);
 void	set_player(t_d *d);
 void	get_data(t_d *d);

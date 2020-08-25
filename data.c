@@ -85,6 +85,7 @@ char	**get_element(int rows, int cols, char *line, int element)
 	char	**tmp;
 
 	i = -1;
+	// printf("SATA JÄNISTÄ!!!\n");
 	if(!(tmp = (char **)malloc((rows + 1) * sizeof(char *))))
 		return (NULL);
 	while (++i < rows)
@@ -96,6 +97,7 @@ char	**get_element(int rows, int cols, char *line, int element)
 		ft_strcpy(tmp[i], line);
 	}
 	tmp[i] = NULL;
+//	ft_print_strarr(tmp);
 	return (tmp);
 }
 
@@ -135,6 +137,8 @@ void	init_struct(t_d *d)
 	d->lmxy = 0;
 	d->lmox = 0;
 	d->lmoy = 0;
+	d->plx = 0;
+	d->pty = 0;
 }
 
 void	get_data(t_d *d)
@@ -144,22 +148,23 @@ void	get_data(t_d *d)
 
 	get_next_line(d->fd, &line);
 //	tmp = line;
+	printf("SATA JÄNISTÄ!!!: %s\n", line);
 	if (ft_strnequ(line, "Plateau", 7))
 	{
 		get_dim(d, line, 'm');
 		get_next_line(d->fd, &line);
 		d->map = get_element(d->my, d->mx, line, 'm');
 		first_moves(d);
+		// ft_print_strarr(d->map);
 	}
-	else if (ft_strnequ(line, "Piece", 5))
+	if (ft_strnequ(line, "Piece", 5))
 	{
 		get_dim(d, line, 'p');
 		d->pc = get_element(d->py, d->px, line, 'p');
+		// ft_print_strarr(d->pc);
 	}
 	// else if (ft_strnequ(line, "got", 3))
 	// 	prev_move(d, line);
 	//ft_strclr(line);
-	// ft_print_strarr(d->map);
-	// ft_print_strarr(d->pc);
 	// print_struct(d);
 }

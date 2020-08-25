@@ -23,7 +23,7 @@ void	ft_print_intarr(int **arr, int maxr, int maxc) //fd
 		j = 0;
 		while(j < maxc)
 		{
-			printf("%3i", arr[i][j]);
+			printf("%2i", arr[i][j]);
 			j++;
 		}
 		printf("\n");
@@ -66,69 +66,89 @@ void	max_out_hmap(t_d *d)
 	}
 }
 
-void	fill_map(t_d *d, int y, int x, int l) //b
-{
-	if ((d->map[y][x] != d->e) && (d->hmap[y][x] == 0 || (l <= d->hmap[y][x])))
-	{
-		d->hmap[y][x] = l;
-	}
-	if (d->map[y][x] == d->e)
-		d->hmap[y][x] = -1;
-}
-
 int		ft_abs(int nb)
 {
 	return (nb = (nb < 0) ? -nb : nb);
 }
 
-void	fill_square(t_d *d, int y, int x)
+void	fill_square(t_d *d, int enemy_y, int enemy_x)
 {
-	int	i;
-	int	j;
-	int l;
+	int	cur_col;
+	int	cur_row;
+	int distance;
 	
-	j = 0;
-	while (j < d->my)
+	cur_row = 0;
+	while (cur_row < d->my)
 	{
-		i = 0;
-		while (i < d->mx)
+		cur_col = 0;
+		while (cur_col < d->mx)
 		{
-			l = ft_abs(i - x) > ft_abs(j - y) ? ft_abs(i - x) : ft_abs(j - y);
-			if ((d->hmap[j][i]) > l)
-				d->hmap[j][i] = l;
-			i++;
+			distance = ft_abs(cur_col - enemy_x) > ft_abs(cur_row - enemy_y) ? \
+				ft_abs(cur_col - enemy_x) : ft_abs(cur_row - enemy_y);
+			if ((d->hmap[cur_row][cur_col]) > distance)
+				d->hmap[cur_row][cur_col] = distance;
+			cur_col++;
 		}
-		j++;
+		cur_row++;
 	}
 }
 
-void	ft_ca_maptoia_hmap(t_d *d)
+void		enemy_presence_max(t_d *d, int y, int x)
 {
-	int	y;
-	int	x;
-	
-	y = 0;
-	d->e = (d->pnb == 1) ? 'X' : 'O';
-	while (y < d->my)
-	{
-		x = 0;
-		while (x < d->mx)
-		{
-			if(d->map[y][x] == d->e)
-			{
-				fill_square(d, y, x);
-				//epp(d, y, x, 0);
-				// eppp(d, y, x, 0);
-//				enemy_presence(d, y, x, 0);
-			}
-			++x;
-		}
-		y++;
-	}
-	//fill_zeros(d);
-	ft_print_intarr(d->hmap, d->my, d->mx);
+	int	p;
+	int	e;
+
+	p = 0;
+	e = (d->pnb == 1) ? 'X' : 'O';
+	(d->map[y][x] == e) ? d->hmap[y][x] = -1 : 0;
+	p = (x > 0 && d->hmap[y][x - 1] < e) ? 1 : 0;
+	p += (x < d->mx && d->hmap[y][x + 1] == e) ? 1 : 0;
+	p += (y > 0 && x > 0 && d->hmap[y - 1][x - 1] == e) ? 1 : 0;
+	p += (y < (d->my - 1) && x < d->mx && d->hmap[y + 1][x + 1] == e) ? 1 : 0;
+	p += (y < (d->my - 1) && x > 0 && d->hmap[y + 1][x - 1] == e) ? 1 : 0;
+	p += (y > 0 && x < d->mx && d->hmap[y - 1][x + 1] == e) ? 1 : 0;
+	p += (y < (d->my - 1) && d->hmap[y + 1][x] == e) ? 1 : 0;
+	p += (y > 0 && d->hmap[y - 1][x] == e) ? 1 : 0;
 }
 
+// void		enemy_presence_maxim(t_d *d, int y, int x)
+// {
+// 	int	p;
+// 	int	e;
+
+// 	p = 0;
+// 	e = (d->pnb == 1) ? 'X' : 'O';
+// 	if (d->map[y][x] == e)
+// 		d->map[y][x] = -1;
+// 	p = (x > 0 && d->map[y][x - 1] < e) ? 1 : 0;
+// 	p += (x < d->mx && d->map[y][x + 1] == e) ? 1 : 0;
+// 	p += (y > 0 && x > 0 && d->map[y - 1][x - 1] == e) ? 1 : 0;
+// 	p += (y < (d->my - 1) && x < d->mx && d->map[y + 1][x + 1] == e) ? 1 : 0;
+// 	p += (y < (d->my - 1) && x > 0 && d->map[y + 1][x - 1] == e) ? 1 : 0;
+// 	p += (y > 0 && x < d->mx && d->map[y - 1][x + 1] == e) ? 1 : 0;
+// 	p += (y < (d->my - 1) && d->map[y + 1][x] == e) ? 1 : 0;
+// 	p += (y > 0 && d->map[y - 1][x] == e) ? 1 : 0;
+// }
+
+
+void	fill_distance(t_d *d, int enemy_y, int enemy_x)
+{
+	int	cur_col;
+	int	cur_row;
+//	int distance;
+	
+	cur_row = 0;
+	while (cur_row < d->my)
+	{
+		cur_col = 0;
+		while (cur_col < d->mx)
+		{
+			enemy_presence_max(d, enemy_y, enemy_x);
+			cur_col++;
+		}
+		cur_row++;
+	}
+}
 
 int		count_zeros(t_d *d)
 {
@@ -143,13 +163,38 @@ int		count_zeros(t_d *d)
 		x = 0;
 		while ((x > -1) && (x < d->mx))
 		{
-			if ((d->hmap[y][x] == 0)) // || ((l <= d->hmap[y][x])))// && (y + 1 < zo)))
+			if ((d->hmap[y][x] == 0))
 				tmp += 1;
 			x++;
 		}
 		y++;
 	}
 	return (tmp);
+}
+
+void	ft_ca_maptoia_hmap(t_d *d)
+{
+	int	row;
+	int	col;
+	
+	row = 0;
+	d->e = (d->pnb == 1) ? 'X' : 'O';
+	while (row < d->my)
+	{
+		col = 0;
+		while (col < d->mx)
+		{
+			if(d->map[row][col] == d->e || d->map[row][col] == d->e + 65)
+			{
+				fill_square(d, row, col);
+				// while (count_zeros(d) > 0)
+				// 	fill_distance(d, row, col);
+			}
+			++col;
+		}
+		row++;
+	}
+	ft_print_intarr(d->hmap, d->my, d->mx);
 }
 
 void	fill_zeros(t_d *d)
@@ -264,31 +309,9 @@ void	enemy_presence(t_d *d, int y, int x, int l) //official
 	// enemy_presence(d, y - 1, x + 1, l + 1);
 // }
 
-int		enemy_presence_max(t_d *d, int y, int x)
-{
-	int	p;
-	int	e;
-
-	p = 0;
-	e = (d->pnb == 1) ? 'X' : 'O';
-	if (d->map[y][x] == e)
-		return (0);
-	p += (x > 0 && d->map[y][x - 1] == e) ? 1 : 0;
-	p += (x < d->mx && d->map[y][x + 1] == e) ? 1 : 0;
-	p += (y > 0 && x > 0 && d->map[y - 1][x - 1] == e) ? 1 : 0;
-	p += (y < (d->my - 1) && x < d->mx && d->map[y + 1][x + 1] == e) ? 1 : 0;
-	p += (y < (d->my - 1) && x > 0 && d->map[y + 1][x - 1] == e) ? 1 : 0;
-	p += (y > 0 && x < d->mx && d->map[y - 1][x + 1] == e) ? 1 : 0;
-	p += (y < (d->my - 1) && d->map[y + 1][x] == e) ? 1 : 0;
-	p += (y > 0 && d->map[y - 1][x] == e) ? 1 : 0;
-	return (p);
-}
-
-
-
 void	make_heatmap(t_d *d)
 {
-	d->hmap = ft_malloc_inttab(d->my, d->mx);
+	d->hmap = ft_malloc_inttab(d->my, d->mx); //if not yet
 	max_out_hmap(d);
 	ft_ca_maptoia_hmap(d);
 }
@@ -296,4 +319,5 @@ void	make_heatmap(t_d *d)
 void	choose_move(t_d *d)
 {
 	make_heatmap(d);
+	play_pc(d);
 }

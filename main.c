@@ -22,8 +22,8 @@ int		main()
 	//while (1)
 	// {
 	get_data(&data);
+	get_data(&data);
 	choose_move(&data);
-	play_pc(&data);
 	// }
 	return (0);
 }
