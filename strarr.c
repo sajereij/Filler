@@ -42,6 +42,19 @@ void	ft_strarr_free(char **arr, int rows)
 // 	return (tmp);
 // }
 
+void	ft_strarr_print_fd(char **arr, int fd) //fd
+{
+	int i;
+	
+	i = -1;
+	while (arr[++i] != NULL)
+	{
+		ft_putstr_fd(arr[i], fd);
+		ft_putchar_fd('\n', fd);
+	}
+	ft_putchar_fd('\n', fd);
+}
+
 void	ft_strarr_print(char **arr) //fd
 {
 	int i;

@@ -25,34 +25,6 @@ void	print_struct(t_d *d) //fd
 	printf("%d lmo row\n", d->lmoy);
 }
 
-void	ft_print_strarr(char **arr) //fd
-{
-	int i;
-	
-	i = -1;
-	while (arr[++i] != NULL)
-		printf("%s\n", arr[i]);
-	printf("\n");
-	
-}
-
-void	prev_move(t_d *d, char *line)
-{
-	int	tmp;
-	
-	while (ft_isdigit(*line) == 0 && *line)
-	{
-		d->prev_turn = (*line == 'X') ? 'X' : 'O';
-		line++;
-	}
-	tmp = ft_atoi((const char *)line);
-	(d->prev_turn == 'X') ? (d->lmxy = tmp) : (d->lmoy = tmp);
-	while (ft_isdigit(*line) == 1 && *line)
-		line++;
-	tmp = ft_atoi((const char *)line);
-	(d->prev_turn == 'X') ? (d->lmxx = tmp) : (d->lmox = tmp);
-}
-
 void	first_moves(t_d *d)
 {
 	int i;
@@ -97,7 +69,7 @@ char	**get_element(int rows, int cols, char *line, int element)
 		ft_strcpy(tmp[i], line);
 	}
 	tmp[i] = NULL;
-//	ft_print_strarr(tmp);
+//	ft_strarr_print(tmp);
 	return (tmp);
 }
 
@@ -119,16 +91,15 @@ void	set_player(t_d *d)
 {
 	char *line;
 	
-	get_next_line(d->fd, &line);
+	get_next_line(0, &line);
 	if (ft_strstr(line, "sreijola") != NULL) 
 		d->pnb = ft_atoi(ft_strchr((char *)line, 'p') + 1);
 }
 
 void	init_struct(t_d *d)
 {
-	d->fd = 0;
+	d->fd = 1;
 	d->pnb = 1;
-	d->prev_turn = 0;
 	d->my = 0;
 	d->mx = 0;
 	d->py = 0;
@@ -139,32 +110,31 @@ void	init_struct(t_d *d)
 	d->lmoy = 0;
 	d->plx = 0;
 	d->pty = 0;
+	d->heat_score = 0;
 }
 
 void	get_data(t_d *d)
 {
-//	char	*tmp;
 	char	*line;
 
-	get_next_line(d->fd, &line);
-//	tmp = line;
-	printf("SATA JÄNISTÄ!!!: %s\n", line);
-	if (ft_strnequ(line, "Plateau", 7))
+	while (get_next_line(0, &line))
 	{
-		get_dim(d, line, 'm');
-		get_next_line(d->fd, &line);
-		d->map = get_element(d->my, d->mx, line, 'm');
-		first_moves(d);
-		// ft_print_strarr(d->map);
+		if (ft_strnequ(line, "Plateau", 7))
+		{
+			get_dim(d, line, 'm');
+			get_next_line(0, &line);
+			d->map = get_element(d->my, d->mx, line, 'm');
+			first_moves(d);
+//			ft_strarr_print_fd(d->map, d->fd);
+		}
+		else if (ft_strnequ(line, "Piece", 5))
+		{
+			get_dim(d, line, 'p');
+			d->pc = get_element(d->py, d->px, line, 'p');
+//			ft_strarr_print_fd(d->pc, d->fd);
+			break;
+		}
+		else
+			ft_strdel(&line);
 	}
-	if (ft_strnequ(line, "Piece", 5))
-	{
-		get_dim(d, line, 'p');
-		d->pc = get_element(d->py, d->px, line, 'p');
-		// ft_print_strarr(d->pc);
-	}
-	// else if (ft_strnequ(line, "got", 3))
-	// 	prev_move(d, line);
-	//ft_strclr(line);
-	// print_struct(d);
 }

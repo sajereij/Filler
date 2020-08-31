@@ -12,18 +12,28 @@
 
 #include "filler.h"
 
-int		main()
+int		main(void)
 {
 	t_d		data;
-//	char	*line;
+	int		ret;
 
 	init_struct(&data);
+	data.fd = open("q", O_WRONLY | O_CREAT);
 	set_player(&data);
-	//while (1)
-	// {
-	get_data(&data);
-	get_data(&data);
-	choose_move(&data);
-	// }
+	while (1)
+	{
+		get_data(&data);
+		if ((ret = choose_move(&data)) < 0)
+		{	
+			if (ret == -1)
+				write(2, "No more moves left!\n", 20);
+			if (ret == -2)
+				write(2, "Piece bigger than map!\n", 20);
+			
+			break;
+			
+			//return (0);
+		}
+	}
 	return (0);
 }

@@ -12,40 +12,6 @@
 
 #include "filler.h"
 
-void	ft_print_intarr(int **arr, int maxr, int maxc) //fd
-{
-	int i;
-	int	j;
-
-	i = -1;
-	while(++i < maxr)
-	{
-		j = 0;
-		while(j < maxc)
-		{
-			printf("%2i", arr[i][j]);
-			j++;
-		}
-		printf("\n");
-	}
-}
-
-int		**ft_malloc_inttab(int rows, int cols)
-{
-	int		**tmp;
-	int		i;
-
-	i = -1;
-	if(!(tmp = (int **)malloc((rows) * sizeof(int *))))
-		return (NULL);
-	while (++i < rows)
-	{
-		if(!(tmp[i] = (int *)malloc((cols) * sizeof(int))))
-			return (NULL);
-	}
-	return (tmp);
-}
-
 void	max_out_hmap(t_d *d)
 {
 	int	x;
@@ -66,12 +32,7 @@ void	max_out_hmap(t_d *d)
 	}
 }
 
-int		ft_abs(int nb)
-{
-	return (nb = (nb < 0) ? -nb : nb);
-}
-
-void	fill_square(t_d *d, int enemy_y, int enemy_x)
+void	fill_heatmap(t_d *d, int enemy_y, int enemy_x)
 {
 	int	cur_col;
 	int	cur_row;
@@ -83,6 +44,7 @@ void	fill_square(t_d *d, int enemy_y, int enemy_x)
 		cur_col = 0;
 		while (cur_col < d->mx)
 		{
+			// distance = ft_abs(cur_row - enemy_y) + ft_abs(cur_col - enemy_x); //manhattan distance: must walk arount the block
 			distance = ft_abs(cur_col - enemy_x) > ft_abs(cur_row - enemy_y) ? \
 				ft_abs(cur_col - enemy_x) : ft_abs(cur_row - enemy_y);
 			if ((d->hmap[cur_row][cur_col]) > distance)
@@ -172,29 +134,26 @@ int		count_zeros(t_d *d)
 	return (tmp);
 }
 
-void	ft_ca_maptoia_hmap(t_d *d)
+void	map_to_heatmap(t_d *d)
 {
 	int	row;
 	int	col;
 	
-	row = 0;
+	row = -1;
 	d->e = (d->pnb == 1) ? 'X' : 'O';
-	while (row < d->my)
+	while (++row < d->my)
 	{
-		col = 0;
-		while (col < d->mx)
-		{
-			if(d->map[row][col] == d->e || d->map[row][col] == d->e + 65)
+		col = -1;
+		while (++col < d->mx)
+			if(d->map[row][col] == d->e || d->map[row][col] == d->e + 32)
 			{
-				fill_square(d, row, col);
+				fill_heatmap(d, row, col);
 				// while (count_zeros(d) > 0)
 				// 	fill_distance(d, row, col);
 			}
-			++col;
-		}
-		row++;
 	}
-	ft_print_intarr(d->hmap, d->my, d->mx);
+//	ft_intarr_print(d->hmap, d->my, d->mx);
+	// ft_intarr_print_fd(d->hmap, d->my, d->mx, d->fd);
 }
 
 void	fill_zeros(t_d *d)
@@ -239,36 +198,6 @@ void	fill_zeros(t_d *d)
 	}
 }
 
-// void	eppp(t_d *d, int y, int x, int l)
-// {
-// 	if (x < 0 || y < 0 || y > (d->my - 1) || x > (d->mx - 1))
-// 		return ;
-// 	if (d->map[y][x] == d->e)
-// 		d->hmap[y][x] = -1;
-// 	else if ((d->map[y][x] != d->e) && (d->hmap[y][x] == 0 || (l < d->hmap[y][x])))
-// 		d->hmap[y][x] = l;
-// 	eppp(d, y - 1, x, l + 1);
-// 	eppp(d, y - 1, x + 1, l + 1);
-// 	eppp(d, y - 1, x, l + 1);
-// 	eppp(d, y + 2, x + 2, l + 1);
-// }
-
-void	epp(t_d *d, int y, int x, int l)
-{
-	if (x < 0 || y < 0 || y > (d->my - 1) || x > (d->mx - 1))
-		return ;
-	if (d->map[y][x] == d->e)
-		d->hmap[y][x] = -1;
-	else if ((d->map[y][x] != d->e) && (d->hmap[y][x] == 0 || (l < d->hmap[y][x])))
-		d->hmap[y][x] = l;
-	// epp(d, y - 1, x, l + 1);
-	// epp(d, y - 1, x + 1, l + 1);
-	epp(d, y, x + 1, l + 1);
-	epp(d, y + 1, x, l + 1);
-	epp(d, y + 1, x + 1, l + 1);
-	epp(d, y + 2, x - 2, l + 1);
-}
-
 void	enemy_presence(t_d *d, int y, int x, int l) //official
 {
 	printf("%d, %d\n", y, x);
@@ -311,13 +240,15 @@ void	enemy_presence(t_d *d, int y, int x, int l) //official
 
 void	make_heatmap(t_d *d)
 {
-	d->hmap = ft_malloc_inttab(d->my, d->mx); //if not yet
+	d->hmap = ft_inttab_malloc(d->my, d->mx); //if not yet
 	max_out_hmap(d);
-	ft_ca_maptoia_hmap(d);
+	map_to_heatmap(d);
 }
 
-void	choose_move(t_d *d)
+int		choose_move(t_d *d)
 {
 	make_heatmap(d);
-	play_pc(d);
+	if (play_pc(d) == -1)
+		return (-1);
+	return (1);
 }

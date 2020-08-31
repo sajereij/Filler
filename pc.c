@@ -18,7 +18,7 @@ char	**trim_pc(t_d *d, int last_row, int last_col)
 	char	**tmp;
 
 	i = -1;
-	if(!(tmp = (char **)malloc(((last_row - d->pty + 2) * sizeof(char *)))))
+	if (!(tmp = (char **)malloc(((last_row - d->pty + 2) * sizeof(char *)))))
 		return (NULL);
 	while (++i + d->pty <= last_row)
 		tmp[i] = ft_strsub(d->pc[d->pty + i], d->plx, last_col - d->plx + 1);	
@@ -26,7 +26,7 @@ char	**trim_pc(t_d *d, int last_row, int last_col)
 	ft_strarr_free(d->pc, d->py);
 	d->py -= (d->pty) + (d->py - last_row - 1);
 	d->px = ft_strlen(tmp[0]);
-	printf("new dim: y %d x %d\n", d->py, d->px);
+//	printf("new dim: y %d x %d\n", d->py, d->px);
 	return (tmp);
 }
 
@@ -54,7 +54,7 @@ void	find_bottom_right_trim(t_d *d)
 	}
 	// printf("bottom-right: %d, %d\n", pc_endy, pc_endx);
 	d->pc = trim_pc(d, pc_endy,  pc_endx);
-	ft_strarr_print(d->pc);
+	// ft_strarr_print_fd(d->pc, d->fd);
 }
 
 void	find_top_left(t_d *d)
@@ -65,7 +65,6 @@ void	find_top_left(t_d *d)
 	cur_row = -1;
 	d->plx = d->px;
 	d->pty = d->py;
-	ft_strarr_print(d->pc);
 	while (++cur_row < d->py)
 	{
 		cur_col = -1;
