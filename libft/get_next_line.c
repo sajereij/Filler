@@ -6,11 +6,11 @@
 /*   By: sreijola <sreijola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 11:26:00 by sreijola          #+#    #+#             */
-/*   Updated: 2019/11/27 13:54:57 by sreijola         ###   ########.fr       */
+/*   Updated: 2020/09/28 01:33:15 by sreijola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "./includes/get_next_line.h"
 
 static int		ft_find_line(char **aof, char **line, const int fd)
 {
@@ -42,7 +42,6 @@ int				get_next_line(const int fd, char **line)
 {
 	static char	*aof[FD_MAX];
 	ssize_t		ret;
-	char		*temp;
 	char		buff[BUFF_SIZE + 1];
 
 	ret = 0;
@@ -55,10 +54,8 @@ int				get_next_line(const int fd, char **line)
 			&& (ret = read(fd, buff, BUFF_SIZE)))
 	{
 		buff[ret] = '\0';
-		if (!(temp = ft_strjoin(aof[fd], buff)))
+		if (!(aof[fd] = ft_strjoin_free(aof[fd], buff, 1)))
 			return (-1);
-		free(aof[fd]);
-		aof[fd] = temp;
 	}
 	if (ret == 0 && aof[fd][0] == '\0')
 		return (0);

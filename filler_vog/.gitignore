@@ -1,0 +1,7 @@
+*.out
+.DS_store
+resources/
+resources_mac/
+apu/
+.trace
+*.o

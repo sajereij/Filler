@@ -6,11 +6,11 @@
 /*   By: sreijola <sreijola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/17 11:35:22 by sreijola          #+#    #+#             */
-/*   Updated: 2019/10/17 11:45:59 by sreijola         ###   ########.fr       */
+/*   Updated: 2020/09/26 01:49:53 by sreijola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "./includes/libft.h"
 #include <unistd.h>
 
 void	ft_putchar(char c)

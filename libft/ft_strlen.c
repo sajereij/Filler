@@ -6,11 +6,11 @@
 /*   By: sreijola <sreijola@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/15 16:42:39 by sreijola          #+#    #+#             */
-/*   Updated: 2019/10/28 16:07:40 by sreijola         ###   ########.fr       */
+/*   Updated: 2020/09/26 01:49:53 by sreijola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "./includes/libft.h"
 
 size_t		ft_strlen(char const *s)
 {
